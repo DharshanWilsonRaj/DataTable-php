@@ -32,10 +32,8 @@ if (isset($_POST['Update_submit'])) {
     $phone = mysqli_real_escape_string($conn, $_POST['phone']);
 
     if (!empty($username) && !empty($email) &&  !empty($phone)) {
-
         $sql = "UPDATE users_lists SET username=$username,  email=$email,  phone=$phone  WHERE id=$editId";
-        // print_r($sql, 0);
-        $result = mysqli_query($conn, "UPDATE users_lists SET username=$username,  email=$email,  phone=$phone  WHERE id=$editId");
+        $result = mysqli_query($conn, "UPDATE users_lists SET username='$username',  email='$email',  phone='$phone'  WHERE id=$editId");
         if ($result) {
             print_r(0);
             echo "Record updated successfully";
@@ -53,6 +51,7 @@ if (isset($_POST['Update_submit'])) {
     </div>
 </div>
 
+<p class="text-center">Update User </p>
 
 <form action="" method="post" class="d-flex align-items-center justify-content-center flex-column mt-5" onsubmit="return validation(['username','email','phone'])">
     <div class="form_element mb-4  ">
@@ -68,5 +67,5 @@ if (isset($_POST['Update_submit'])) {
         <div class="error text-danger"> </div>
     </div>
 
-    <button name="Update_submit" value="submit">Sumbit</button>
+    <button name="Update_submit" value="submit">Update</button>
 </form>

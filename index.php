@@ -3,23 +3,42 @@
 require_once __DIR__ . '/db.php';
 $lists = [];
 
+
 function getData()
 {
     global $conn;
     $sql = "SELECT * from users_lists";
     $result = mysqli_query($conn, $sql);
-
     if (mysqli_num_rows($result) > 0) {
-
         return $result;
+    }
+}
+
+$is_deleted = false;
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['delete_id'])) {
+        $deleteId =  $_GET['delete_id'];
+        $sql = "DELETE FROM users_lists WHERE id=$deleteId";
+        if (mysqli_query($conn, $sql)) {
+            $is_deleted = true;
+            header("Location: index.php");
+        } else {
+            echo "Error deleting record: " . mysqli_error($conn);
+        }
     }
 }
 ?>
 
-
-
-
 <p class="text-bold text-center mt-2">PHP Data table</p>
+<?php
+if ($is_deleted === true) {
+    echo "<div class='alert alert-success' role='alert'>
+    Deleted Sucessfully
+    </div>";
+}
+
+?>
+
 <div class="row mt-5">
     <div class="d-flex">
         <div class="ms-auto me-5">
@@ -57,7 +76,7 @@ function getData()
                                 <i class="bi bi-pencil-square"></i>
                             </span>
                          </a>
-                         <a href="index.php?delete_id=' . $row['id']. '"  onclick="return confirm(\'Are you sure you want to delete this record?\');">
+                         <a href="index.php?delete_id=' . $row['id'] . '"  onclick="return confirm(\'Are you sure you want to delete this record?\');">
                             <span class="text-danger" >
                                 <i class="bi bi-trash-fill"></i>
                             </span>
