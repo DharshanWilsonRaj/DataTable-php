@@ -1,0 +1,47 @@
+
+tbody tr {
+    max-height: 10px !important;
+}
+
+.dataTables_wrapper .dataTables_length {
+    display: none;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 20px;
+
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid rgb(154, 154, 255);
+    padding: 5px 10px;
+    border-radius: 5px;
+    outline: none;
+    margin-left: 20px;
+}
+
+.dataTables_info,
+.dataTables_paginate {
+    display: inline-block;
+}
+
+.dataTables_paginate {
+    margin-left: 5%;
+}
+
+.dataTables_paginate a {
+    text-decoration: none;
+    margin: 0px 1px;
+    background-color: #ffffff;
+    color: rgb(73, 73, 73);
+    padding: 5px 10px;
+    border: 1px solid #0D6EFD;
+}
+
+.dataTables_paginate .current {
+    text-decoration: none;
+    margin: 0px 2px;
+    background-color: #0D6EFD;
+    color: rgb(255, 255, 255);
+    padding: 5px 10px;
+}
