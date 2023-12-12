@@ -4,13 +4,20 @@ require_once __DIR__ . '/db.php';
 
 // Get User data Values
 $editId =  $_GET['id'];
+if (!empty($editId))
+    $editId = mysqli_real_escape_string($conn, $editId);
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['id'])) {
-        $editUserQuery = mysqli_query($conn, "SELECT * from users_lists where id = $editId");
 
-        if ($editUserQuery) {
-            if (mysqli_num_rows($editUserQuery) > 0) {
-                $userData = mysqli_fetch_assoc($editUserQuery);
+        $editUserQuery = mysqli_prepare($conn, "SELECT * from users_lists where id = ?");
+        mysqli_stmt_bind_param($editUserQuery, "i", $editId);
+        mysqli_stmt_execute($editUserQuery);
+        $result = mysqli_stmt_get_result($editUserQuery);
+
+        if ($result) {
+            if (mysqli_num_rows($result) > 0) {
+                $userData = mysqli_fetch_assoc($result);
                 $username = $userData['username'];
                 $email = $userData['email'];
                 $phone = $userData['phone'];
@@ -24,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 // Update User data 
-
 if (isset($_POST['Update_submit'])) {
 
     $username = mysqli_real_escape_string($conn, $_POST['username']);
@@ -37,7 +43,7 @@ if (isset($_POST['Update_submit'])) {
         if ($result) {
             print_r(0);
             echo "Record updated successfully";
-            header("Location: index.php");
+            header("Location: index.php?page_no=1");
         } else {
             echo "Error updating record: " . mysqli_error($conn);
         }

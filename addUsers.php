@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
 
 <div class="d-flex p-5">
     <div class="ms-auto me-5">
-        <a href="index.php " class="fs-5">Home</a>
+        <a href="index.php?page_no=1 " class="fs-5">Home</a>
     </div>
 </div>
 
@@ -48,7 +48,7 @@ if (isset($_POST['submit'])) {
         <div class="error text-danger"> </div>
     </div>
 
-    <button name="submit" value="submit">Sumbit</button>
+    <button name="submit" value="submit">Submit</button>
 </form>
 
 

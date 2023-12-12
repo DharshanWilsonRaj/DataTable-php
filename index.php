@@ -1,19 +1,26 @@
 <?php require_once __DIR__ . '/head.php';
 
 require_once __DIR__ . '/db.php';
-$lists = [];
+// $lists = [];
 
+$usersList = [];
 
-function getData()
-{
-    global $conn;
-    $sql = "SELECT * from users_lists";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        return $result;
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (isset($_GET['page_no'])) {
+        $page =  $_GET['page_no'];
+        global $conn;
+        $itemsPerPage = 5;
+        $offset = ($page - 1) * $itemsPerPage;
+        $sql = "SELECT * FROM users_lists ORDER BY id DESC LIMIT $offset, $itemsPerPage";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            $usersList = $result;
+        }
     }
 }
 
+
+// delete functiion
 $is_deleted = false;
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (isset($_GET['delete_id'])) {
@@ -27,7 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     }
 }
+
+function getTotalList()
+{
+    global $conn;
+    $sql = "SELECT * FROM users_lists";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        return $result;
+    }
+}
 ?>
+
 
 <p class="text-bold text-center mt-2">PHP Data table</p>
 <?php
@@ -61,12 +79,11 @@ if ($is_deleted === true) {
                 </thead>
                 <tbody>
                     <?php
-                    $result = getData();
+                    $result = $usersList;
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $id++;
                         echo
                         '<tr>
-                        <td>' . $id . '</td>
+                        <td>' . $row['id'] . '</td>
                         <td>' . $row['username'] . '</td>
                         <td>' . $row['email'] . '</td>
                         <td>' . $row['phone'] . '</td>
@@ -86,8 +103,23 @@ if ($is_deleted === true) {
                     } ?>
                 </tbody>
             </table>
+            <?php
+            $result = getTotalList();
+            $numRows = mysqli_num_rows($result);
+            $pageCount = $numRows / 5;
+            $currentPage = 1;
+            echo "<div>";
+            while ($currentPage <= $pageCount) {
+                echo '<a class="me-2 text-decoration-none p-2 btn-primary "  href="index.php?page_no=' . $currentPage . '">' . $currentPage . '</a>';
+                $currentPage++;
+            }
+            ?>
         </div>
+
+
+
     </div>
+</div>
 
 </div>
 
